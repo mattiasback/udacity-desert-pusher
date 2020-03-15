@@ -18,6 +18,7 @@ package com.example.android.dessertpusher
 
 import android.content.ActivityNotFoundException
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -26,6 +27,7 @@ import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import com.example.android.dessertpusher.databinding.ActivityMainBinding
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     private var currentDessert = allDesserts[0]
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Timber.i("onCreate called")
         super.onCreate(savedInstanceState)
 
         // Use Data Binding to get reference to the views
@@ -80,6 +83,31 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         binding.dessertButton.setImageResource(currentDessert.imageId)
     }
 
+    override fun onPause() {
+        Timber.i("onPause called")
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        Timber.i("onDestroy called")
+        super.onDestroy()
+    }
+
+    override fun onRestart() {
+        Timber.i("onRestart called")
+        super.onRestart()
+    }
+
+    override fun onStop() {
+        Timber.i("onStop called")
+        super.onStop()
+    }
+
+    override fun onResume() {
+        Timber.i("onResume called")
+        super.onResume()
+    }
+
     /**
      * Updates the score when the dessert is clicked. Possibly shows a new dessert.
      */
@@ -94,6 +122,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         // Show the next dessert
         showCurrentDessert()
+    }
+
+    override fun onStart() {
+        Timber.i("onStart called")
+        super.onStart()
     }
 
     /**
