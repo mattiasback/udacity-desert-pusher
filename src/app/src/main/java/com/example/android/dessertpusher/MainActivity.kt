@@ -30,6 +30,8 @@ import androidx.lifecycle.LifecycleObserver
 import com.example.android.dessertpusher.databinding.ActivityMainBinding
 import timber.log.Timber
 
+const val KEY_REVENUE = "key_revenue"
+
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     private var revenue = 0
@@ -69,6 +71,11 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate called")
         super.onCreate(savedInstanceState)
+
+        //Restore revenue int from saved state (saved on app shutdown)
+        if(savedInstanceState != null) {
+            revenue = savedInstanceState.getInt(KEY_REVENUE)
+        }
 
         // Use Data Binding to get reference to the views
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -116,6 +123,18 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     override fun onDestroy() {
         Timber.i("onDestroy called")
         super.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.i("onSaveInstance called")
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_REVENUE, revenue)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        Timber.i("onRestoreInstance called")
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     /**
