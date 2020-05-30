@@ -31,6 +31,8 @@ import com.example.android.dessertpusher.databinding.ActivityMainBinding
 import timber.log.Timber
 
 const val KEY_REVENUE = "key_revenue"
+const val KEY_DESSERTS_SOLD = "key_amount_sold"
+const val KEY_TIMER_COUNT = "key_timer_count"
 
 class MainActivity : AppCompatActivity(), LifecycleObserver {
 
@@ -72,9 +74,14 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         Timber.i("onCreate called")
         super.onCreate(savedInstanceState)
 
-        //Restore revenue int from saved state (saved on app shutdown)
+        //Create timer
+        dessertTimer = DessertTimer(this.lifecycle)
+
+        //Restore app state from saved state (saved on app shutdown)
         if(savedInstanceState != null) {
             revenue = savedInstanceState.getInt(KEY_REVENUE)
+            dessertsSold = savedInstanceState.getInt(KEY_DESSERTS_SOLD)
+            dessertTimer.secondsCount = savedInstanceState.getInt(KEY_TIMER_COUNT)
         }
 
         // Use Data Binding to get reference to the views
@@ -90,9 +97,6 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
-
-        //Create timer
-        dessertTimer = DessertTimer(this.lifecycle)
     }
 
     override fun onStart() {
@@ -129,6 +133,8 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
         Timber.i("onSaveInstance called")
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_REVENUE, revenue)
+        outState.putInt(KEY_DESSERTS_SOLD, dessertsSold)
+        outState.putInt(KEY_TIMER_COUNT, dessertTimer.secondsCount)
         super.onSaveInstanceState(outState)
     }
 
